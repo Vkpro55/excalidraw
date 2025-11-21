@@ -4,6 +4,7 @@ import { User } from "./db.js";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import { authMiddleware } from "./middleware.js";
+import { Request, Response } from "express";
 
 const app = express();
 try {
@@ -50,10 +51,10 @@ app.post("/signin", async (req, res)=>{
     }
 });
 
-// app.get("/", authMiddleware, (req, res) =>{
-//     console.log(req.userId);
-//     res.send("Hi");
-// })
+app.get("/", authMiddleware, (req: Request, res: Response) =>{
+    console.log(req.userId);
+    res.send("Hi");
+})
 
 app.listen(5000, ()=>{
     console.log(`Server running... http://localhost:5000`);
