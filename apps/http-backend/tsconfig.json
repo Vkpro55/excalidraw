@@ -4,5 +4,6 @@
         "rootDir": "./src",
         "outDir": "./dist",
         "noImplicitAny": false
-    }
+    },
+    "include": ["src", "src/types"]
 }
