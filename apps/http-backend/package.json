@@ -12,9 +12,16 @@
   "dependencies": {
     "@repo/typescript-config": "workspace:*",
     "@types/express": "^5.0.5",
-    "express": "^5.1.0"
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.20.1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/jsonwebtoken": "^9.0.10"
+  }
 }
