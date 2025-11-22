@@ -18,37 +18,59 @@ app.use(express.json());
 console.log(Config.JWT_SECRET);
 
 app.post("/signup", async (req, res) => {
-    // const {userName, password, firstName, lastName} = req.body;
+    const parsedata = CreateUserSchema.safeParse(req.body);
++    if (!parsedata.success) {
++        return res.json({
++            message: "Incorrect inputs"
++        })
++    }
++
++    try {
++        const user = await prisma.user.create({
++            data: {
++                name: parsedata.data.email,
++                password: parsedata.data.password,
++                email: parsedata.data.email
++            }
++        });
++
++        return res.json({
++            userI: user.id
++        })
++    } catch (error) {
++        // multiple checks
++        // - unique email fail
++        // db down
++        // serer down
++        return res.json({
++            error: "Creation failed"
++        })
 
-    // const user = await User.findOne({userName});
-    // if (!user){
-    //     await User.create({userName, password, firstName, lastName});
-    //     return res.json({
-    //         message: "Signed up"
-    //     })
-    // } else {
-    //     return res.status(411).json({
-    //         message: "User is already exist"
-    //     })
-    // }
++    }
 });
 
 app.post("/signin", async (req, res) => {
-    // const {userName, password} = req.body;
 
-    // const user = await User.findOne({userName, password});
-    // if (!user){
-    //     return res.status(400).json({
-    //         message: "User credentials not present"
-    //     })
-    // } else {
-    //     // create token and send 
-    //     const token = jwt.sign({userId : user._id}, "SECRET");
-
-    //     return res.status(200).json({
-    //         token
-    //     })
-    // }
+ const parsedata= SigninBodySchema.safeParse(req.body);
++    if (!parsedata.success) {
++        return res.json({
++            message: "Incorrect inputs"
++        })
++    }
++
++    try {
++        // if hash then compare the password 
++        const user = await prisma.user.findFirst({
++            where: {
++                email: parsedata.data.email,
++                password: parsedata.data.password
++            }
++        })
++
++        // const token = jwt.sign({userId: user?.id}, Config.JWT_SECRET);
++    } catch (error) {
++        
++    }
 });
 
 app.post("/create-room", authMiddleware, (req, res) => {
