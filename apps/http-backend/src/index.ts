@@ -51,10 +51,9 @@ app.post("/signin", async (req, res)=>{
     }
 });
 
-app.get("/", authMiddleware, (req: Request, res: Response) =>{
-    console.log(req.userId);
-    res.send("Hi");
-})
+app.post("/create-room", authMiddleware, (req, res) =>{
+
+});
 
 app.listen(5000, ()=>{
     console.log(`Server running... http://localhost:5000`);
