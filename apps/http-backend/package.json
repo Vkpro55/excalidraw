@@ -7,22 +7,24 @@
   "scripts": {
     "build": "tsc -b",
     "start": "node dist/index.js",
-    "dev": "npm run build && npm run start"
+   "dev": "node -r dotenv/config dist/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
     "@repo/backend-common": "workspace:*",
     "@repo/common": "workspace:*",
-    "@repo/db": "workspace:*"
+    "@repo/db": "workspace:*",
+    "@repo/typescript-config": "workspace:*"
   },
   "dependencies": {
     "@types/cors": "^2.8.19",
+    "@types/dotenv": "^8.2.3",
     "@types/express": "^5.0.5",
     "@types/jsonwebtoken": "^9.0.10",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2"
   }

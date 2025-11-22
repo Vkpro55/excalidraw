@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -b",
-    "start" : "node ./dist/config.js",
-    "dev": "pnpm run build && pnpm run start"
+    
   },
   "exports": {
     "./config": "./src/config.ts"

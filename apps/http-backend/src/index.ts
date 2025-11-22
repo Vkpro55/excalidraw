@@ -1,3 +1,8 @@
+import dotenv from "dotenv";
+import path from "path";
+dotenv.config({ path: "./apps/http-backend/.env" });
+
+
 import express from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
@@ -10,6 +15,7 @@ import { CreateUserSchema, SigninBodySchema, CreateRoomSchema } from "@repo/comm
 
 import {prisma} from "@repo/db/client";
 
+
 const app = express();
 
 app.use(cors());
@@ -19,6 +25,7 @@ console.log(Config.JWT_SECRET);
 
 app.post("/signup", async (req, res) => {
     const parsedata = CreateUserSchema.safeParse(req.body);
+    console.log("data: ",parsedata)
     if (!parsedata.success) {
         return res.json({
             message: "Incorrect inputs"
@@ -28,21 +35,22 @@ app.post("/signup", async (req, res) => {
     try {
         const user = await prisma.user.create({
             data: {
-                name: parsedata.data.email,
+                name: parsedata.data.name,
                 password: parsedata.data.password,
                 email: parsedata.data.email
             }
         });
 
-        return res.json({
+        return res.status(200).json({
             userI: user.id
         })
     } catch (error) {
+        console.log("Error is : ", error);
         // multiple checks
         // - unique email fail
         // db down
         // serer down
-        return res.json({
+        return res.status(411).json({
             error: "Creation failed"
         })
     }
