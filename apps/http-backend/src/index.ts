@@ -13,7 +13,7 @@ import { Request, Response } from "express";
 import { Config } from "@repo/backend-common/config"
 import { CreateUserSchema, SigninBodySchema, CreateRoomSchema } from "@repo/common/types";
 
-import {prisma} from "@repo/db/client";
+import { prisma } from "@repo/db/client";
 
 
 const app = express();
@@ -25,10 +25,10 @@ console.log(Config.JWT_SECRET);
 
 app.post("/signup", async (req, res) => {
     const parsedata = CreateUserSchema.safeParse(req.body);
-    console.log("data: ",parsedata)
+    console.log("data: ", parsedata)
     if (!parsedata.success) {
         return res.json({
-            message: "Incorrect inputs"
+            message: "Incorrect inputs hi"
         })
     }
 
@@ -57,13 +57,15 @@ app.post("/signup", async (req, res) => {
 });
 
 app.post("/signin", async (req, res) => {
+    console.log("Request come");
     const parsedata = SigninBodySchema.safeParse(req.body);
     if (!parsedata.success) {
         return res.json({
-            message: "Incorrect inputs"
+            message: "Incorrect inputs do"
         })
     }
 
+    console.log("Yes");
     try {
         // if hash then compare the password 
         const user = await prisma.user.findFirst({
@@ -72,8 +74,17 @@ app.post("/signin", async (req, res) => {
                 password: parsedata.data.password
             }
         })
-    } catch (error) {
 
+        console.log("user", user)
+        const token = jwt.sign({ userId: user?.id }, Config.JWT_SECRET);
+        console.log("token ",token)
+        return res.status(200).json({
+            token
+        })
+    } catch (error) {
+        return res.status(400).json({
+            message: "Errro is signin"
+        })
     }
 });
 
