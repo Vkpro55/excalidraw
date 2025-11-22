@@ -14,7 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@repo/backend-common": "workspace:*"
+    "@repo/backend-common": "workspace:*",
+    "@repo/common": "workspace:*"
   },
   "dependencies": {
     "@types/cors": "^2.8.19",

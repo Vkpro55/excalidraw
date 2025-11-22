@@ -6,6 +6,7 @@ import { authMiddleware } from "./middleware.js";
 import { Request, Response } from "express";
 
 import { Config } from "@repo/backend-common/config"
+import {CreateUserSchema, SigninBodySchema, CreateRoomSchema} from "@repo/common/types";
 
 const app = express();
 
