@@ -5,12 +5,16 @@ import cors from "cors";
 import { authMiddleware } from "./middleware.js";
 import { Request, Response } from "express";
 
+import { Config } from "@repo/backend-common/config"
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.post("/signup", async (req, res)=>{
+console.log(Config.JWT_SECRET);
+
+app.post("/signup", async (req, res) => {
     // const {userName, password, firstName, lastName} = req.body;
 
     // const user = await User.findOne({userName});
@@ -26,7 +30,7 @@ app.post("/signup", async (req, res)=>{
     // }
 });
 
-app.post("/signin", async (req, res)=>{
+app.post("/signin", async (req, res) => {
     // const {userName, password} = req.body;
 
     // const user = await User.findOne({userName, password});
@@ -44,10 +48,10 @@ app.post("/signin", async (req, res)=>{
     // }
 });
 
-app.post("/create-room", authMiddleware, (req, res) =>{
+app.post("/create-room", authMiddleware, (req, res) => {
 
 });
 
-app.listen(5000, ()=>{
+app.listen(5000, () => {
     console.log(`Server running... http://localhost:5000`);
 })
