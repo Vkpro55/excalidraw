@@ -7,16 +7,21 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "exports": {
-    "./prismaDbClient": "./src/index.ts"
+    "./client": "./src/index.ts"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*"
+    "@repo/typescript-config": "workspace:*",
+    "@types/pg": "^8.15.6",
+    "prisma": "^7.0.0"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/adapter-pg": "^7.0.0",
     "@prisma/client": "^7.0.0",
-    "prisma": "^7.0.0"
+    "db": "link:generated\\prisma",
+    "dotenv": "^17.2.3",
+    "pg": "^8.16.3"
   }
 }
