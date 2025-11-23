@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import path from "path";
 dotenv.config({ path: "./apps/http-backend/.env" });
 
 
@@ -42,7 +41,7 @@ app.post("/signup", async (req, res) => {
         });
 
         return res.status(200).json({
-            userI: user.id
+            userId: user.id
         })
     } catch (error) {
         console.log("Error is : ", error);
@@ -77,7 +76,7 @@ app.post("/signin", async (req, res) => {
 
         console.log("user", user)
         const token = jwt.sign({ userId: user?.id }, Config.JWT_SECRET);
-        console.log("token ",token)
+        console.log("token ", token)
         return res.status(200).json({
             token
         })
@@ -88,7 +87,36 @@ app.post("/signin", async (req, res) => {
     }
 });
 
-app.post("/create-room", authMiddleware, (req, res) => {
+app.post("/create-room", authMiddleware, async (req, res) => {
+    const parsedata = CreateRoomSchema.safeParse(req.body);
+    if (!parsedata.success) {
+        return res.json({
+            message: "Incorrect inputs do"
+        })
+    }
+
+    if (!req.userId) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const userId: string = req.userId;
+    try {
+        const room = await prisma.room.create({
+            data: {
+                slug: parsedata.data.name,
+                adminId: userId
+            }
+        })
+
+        return res.json({
+            roomId: room.id
+        })
+    } catch (error) {
+        console.log("Error white creation of room: ", error);
+        return res.status(400).json({
+            message: "Error white creation of room"
+        })
+    }
 
 });
 
