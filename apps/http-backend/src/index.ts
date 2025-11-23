@@ -120,6 +120,40 @@ app.post("/create-room", authMiddleware, async (req, res) => {
 
 });
 
+app.get("/chat/:roomId", async (req, res) => {
+    const roomId = Number(req.params.roomId);
+
+    // two ways 
+    // - find the room and populate the chat field 
+    // - find many chats that have roomId -> fasterbecause run sql query behind scene
+
+    /**
+     * include: { chats: true }
+     const room = await prisma.room.findUnique({
+                    where: { id: roomId },
+                    include: {
+                      chats: {
+                        orderBy: { id: "desc" },
+                        take: 10
+                      }
+                    }
+                });
+     */
+    const chats = await prisma.chat.findMany({
+        where: {
+            roomId: roomId
+        },
+        orderBy: {
+            id: "desc"
+        },
+        take: 10
+    });
+
+    return res.json({
+        chats
+    })
+})
+
 app.listen(5000, () => {
     console.log(`Server running... http://localhost:5000`);
 })

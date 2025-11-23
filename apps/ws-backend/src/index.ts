@@ -119,8 +119,4 @@ wss.on('connection', (ws, req) => {
 });
 
 
-// Flows
-// - Security implementation (chat room would be secure that it only allows specifc domain client to join)
-// - data storage directly before broadcast that message
-// - primsa.chat.create({data: {......}}) -> dumb
-// - async queues process the db storage (they have re-try mechanism in built so it assure that dat always be written to db) and broadcast simultaneously 
+
