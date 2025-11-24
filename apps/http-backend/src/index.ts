@@ -120,39 +120,91 @@ app.post("/create-room", authMiddleware, async (req, res) => {
 
 });
 
-app.get("/chat/:roomId", async (req, res) => {
-    const roomId = Number(req.params.roomId);
+// app.get("/chat/:roomId", async (req, res) => {
+//     const roomId = Number(req.params.roomId);
 
-    // two ways 
-    // - find the room and populate the chat field 
-    // - find many chats that have roomId -> fasterbecause run sql query behind scene
+//     // two ways 
+//     // - find the room and populate the chat field 
+//     // - find many chats that have roomId -> fasterbecause run sql query behind scene
 
-    /**
-     * include: { chats: true }
-     const room = await prisma.room.findUnique({
-                    where: { id: roomId },
-                    include: {
-                      chats: {
-                        orderBy: { id: "desc" },
-                        take: 10
-                      }
-                    }
-                });
-     */
-    const chats = await prisma.chat.findMany({
+//     /**
+//      * include: { chats: true }
+//      const room = await prisma.room.findUnique({
+//                     where: { id: roomId },
+//                     include: {
+//                       chats: {
+//                         orderBy: { id: "desc" },
+//                         take: 10
+//                       }
+//                     }
+//                 });
+//      */
+//     const chats = await prisma.chat.findMany({
+//         where: {
+//             roomId: roomId
+//         },
+//         orderBy: {
+//             id: "desc"
+//         },
+//         take: 10
+//     });
+
+//     return res.json({
+//         chats
+//     })
+// })
+
+app.get("/chats/:roomId", async (req, res) => {
+    try {
+        const roomId = Number(req.params.roomId);
+        console.log(req.params.roomId);
+        const messages = await prisma.chat.findMany({
+            where: {
+                roomId: roomId
+            },
+            orderBy: {
+                id: "desc"
+            },
+            take: 50
+        });
+
+        res.json({
+            messages
+        })
+    } catch(e) {
+        console.log(e);
+        res.json({
+            messages: []
+        })
+    }
+})
+
+// app.get("/room/:slug", async (req, res) =>{
+//     const slug = req.params.slug;
+//     const room = await prisma.room.findFirst({
+//         where: {
+//             slug: slug
+//         }
+//     });
+
+//     return res.json({
+//         room
+//     })
+// });
+
+app.get("/room/:slug", async (req, res) => {
+    const slug = req.params.slug;
+    const room = await prisma.room.findFirst({
         where: {
-            roomId: roomId
-        },
-        orderBy: {
-            id: "desc"
-        },
-        take: 10
+            slug
+        }
     });
 
-    return res.json({
-        chats
+    res.json({
+        room
     })
 })
+
 
 app.listen(5000, () => {
     console.log(`Server running... http://localhost:5000`);
